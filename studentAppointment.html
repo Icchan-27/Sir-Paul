@@ -150,23 +150,26 @@
                 <th>Remarks</th>
             </tr>
         <tr>
-            <td id="reasonCell"></td>
-            <td id="dateCell"></td>
-            <td id="statusCell"></td>
-            <td id="remarksCell"></td>
+            <tbody id="appointmentTableBody"></tbody>
         </tr>
         </table>
     </div>
     </div>
     <script>
-        const data = JSON.parse(localStorage.getItem("appointmentInfo"));
-
-    if (data) {
-        document.getElementById("reasonCell").textContent = data.reason;
-        document.getElementById("dateCell").textContent = `${data.date} at ${data.time}`;
-        document.getElementById("statusCell").textContent = data.status;
-        document.getElementById("remarksCell").textContent = data.remarks;
-    }
+        const appointments = JSON.parse(localStorage.getItem("appointmentList")) || [];
+        const tableBody = document.getElementById("appointmentTableBody");
+    
+        appointments.forEach(app => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${app.reason}</td>
+                <td>${app.date} at ${app.time}</td>
+                <td>${app.status}</td>
+                <td>${app.remarks}</td>
+            `;
+            tableBody.appendChild(row);
+        });
     </script>
+    
 </body>
 </html>
