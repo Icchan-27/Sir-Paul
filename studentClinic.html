@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SMC Clinic Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #f5f5f5;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #2c7df7;
+            color: white;
+        }
+        .header {
+            background-color: #2c7df7;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        .logout-link {
+            color: white;
+            text-decoration: none;
+            position: absolute;
+            right: 50px;
+            top: 15px;
+            font-size: 15px;
+            background-color: #1f5edb;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .tab {
+            margin-left: 350px;
+            margin-top: 100px;
+            background-color: #2c7df7;
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            display: inline-block;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        .content {
+            margin-left: 350px;
+            margin-top: 0px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-top-left-radius: 0px;
+            width: 1000px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }   
+        .clinic-status {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-left: 900px;
+        }
+        .open {
+            background-color: #28a745; 
+        }
+        .closed {
+            background-color: #dc3545; 
+        }
+        .schedule {
+            margin-left: 350px;
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 1000px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .appointment-form .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .appointment-form label {
+            width: 180px;
+            font-weight: bold;
+        }
+        .appointment-form input,
+        .appointment-form textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .appointment-form textarea {
+            resize: vertical;
+        }
+        .appointment-form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #2c7df7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .appointment-form button:hover {
+            background-color: #1f5edb;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>SMC Clinic</h2>
+        <a href="loginDashboard.html">Profile</a>
+        <a href="#" class="active">Clinic</a>
+        <a href="studentInventory.html">Medicines</a>
+    </div>
+    <div class="header">
+        SMC Clinic Dashboard
+        <a href="Loginpage.html" class="logout-link">Log Out</a>
+    </div>
+    <div class="tab">Clinic</div>
+    <div class="content">
+        <h3><strong>Clinic Schedule</strong>
+        <span class="clinic-status closed">Closed</span></h3>
+        <p><strong>Monday - Wednesday :</strong> 9:00 a.m - 12:00 p.m</p>
+        <p><strong>Thursday - Saturday</strong> 9:00 a.m - 5:00 p.m</p>
+    </div>
+    <div class="schedule">
+        <h4><strong>Schedule an Appointment</strong></h4>
+        <form action="#" method="post" class="appointment-form" onsubmit="saveAppointmentData(event)">
+            <div class="form-row">
+                <label for="date">Appointment Date:</label>
+                <input type="date" id="date" name="date" required />
+            </div>
+            <div class="form-row">
+                <label for="time">Time:</label>
+                <input type="time" id="time" name="time" required />
+            </div>
+            <div class="form-row">
+                <label for="reason">Reason for Visit:</label>
+                <textarea id="reason" name="reason" rows="4" required></textarea>
+            </div>
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+    <script>
+        function saveAppointmentData(e) {
+            e.preventDefault();    
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const reason = document.getElementById('reason').value;
+            const appointment = {
+                date,
+                time,
+                reason,
+                status: "Pending",
+                remarks: "To be reviewed by clinic"
+            }
+            localStorage.setItem("appointmentInfo", JSON.stringify(appointment));
+        }
+    </script>
+    
+</body>
+</html>
