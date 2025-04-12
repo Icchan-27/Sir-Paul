@@ -61,6 +61,9 @@
             border-radius: 5px;
             transition: background 0.3s ease;
         }
+        .logout-link:hover {
+            background-color: #174bb4;
+        }
         .main-content {
             margin-left: 220px;
             padding: 100px 20px 20px 20px;
@@ -119,70 +122,91 @@
             background-color: #2c7df7;
             color: white;
         }
+        button {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:nth-child(1) {
+            background-color: #28a745;
+            color: white;
+        }
+        button:nth-child(2) {
+            background-color: #dc3545;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h2>SMC Clinic</h2>
-            <a href="#" class="active">Profile</a>
-            <a href="nurseClinic.html">Clinic</a>
-            <a href="#">Inventory</a>
-    </div>
+        <a href="#" class="active">Appointments</a>
+        <a href="nurseClinic.html">Clinic</a>
+        <a href="#">Inventory</a>
+    </div> 
     <div class="header">
         SMC Clinic Dashboard
         <a href="Loginpage.html" class="logout-link">Log Out</a>
-        </div>
+    </div>
     <div class="main-content">
-    <div class="profile">
-        <img src="ambot.png" alt="Profile Picture" />
-        <h2>Ma. Alonah A. Chan</h2>
-    </div>
-    <div class="tabs">
-        <a href="#" class="active tab" >Pending</a>
-        <a href="nurseAppointed.html" class="tab">Appointed</a>
-    </div>
-    <div class="content">
-<table>
-    <tr>
-        <th>Reason</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Remarks</th>
-        <th>Action</th>
-    </tr>
-    <tr>
-        <td id="reasonCell"></td>
-        <td id="dateCell"></td>
-        <td id="statusCell"></td>
-        <td id="remarksCell"></td>
-        <td id="actionCell">
-        <button onclick="updateStatus('Accepted')">Accept</button>
-        <button onclick="updateStatus('Rejected')">Reject</button>
-    </td>
-    </tr>
-</table>  
-    <script>
-        const appointment = JSON.parse(localStorage.getItem("appointmentInfo"));
-            if (appointment) {
-                document.getElementById("reasonCell").textContent = appointment.reason;
-                document.getElementById("dateCell").textContent = `${appointment.date} at ${appointment.time}`;
-                document.getElementById("statusCell").textContent = appointment.status || "Pending";
-                document.getElementById("remarksCell").textContent = appointment.remarks || "";
+        <div class="profile">
+            <img src="ambot.png" alt="Profile Picture" />
+            <h2>Ma. Alonah A. Chan</h2>
+        </div>
+        <div class="tabs">
+            <a href="#" class="tab active">Pending</a>
+            <a href="nurseAppointed.html" class="tab">Appointed</a>
+        </div>
+        <div class="content">
+            <table>
+                <tr>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            <tr>
+                <td id="reasonCell"></td>
+                <td id="dateCell"></td>
+                <td id="statusCell"></td>
+                <td>
+                    <button onclick="updateStatus('Accepted')">Accept</button>
+                    <button onclick="updateStatus('Rejected')">Reject</button>
+                </td>
+            </tr>
+            </table>
+        </div>
+        </div>
+        <script>
+            const appointment = JSON.parse(localStorage.getItem("appointmentInfo"));
+            function renderAppointment() {
+                if (appointment) {
+                    document.getElementById("reasonCell").textContent = appointment.reason;
+                    document.getElementById("dateCell").textContent = `${appointment.date} at ${appointment.time}`;
+                    document.getElementById("statusCell").textContent = appointment.status;
+                    document.getElementById("remarksCell").textContent = appointment.remarks;
+                }
             }
-    function updateStatus(newStatus) {
-        const remark = prompt("Enter a remark:");
-            if (remark === null) return;
-                document.getElementById("statusCell").textContent = newStatus;
-                document.getElementById("remarksCell").textContent = remark;
-                const updatedAppointment = {
-                ...appointment,
-                status: newStatus,
-                remarks: remark
-            };
-                localStorage.setItem("appointmentInfo", JSON.stringify(updatedAppointment));
+            function updateStatus(newStatus) {
+                appointment.status = newStatus;
+                appointment.remarks = newStatus === 'Accepted' 
+                    ? "Appointment confirmed by nurse."
+                    : "Appointment rejected by nurse.";
+                localStorage.setItem("appointmentInfo", JSON.stringify(appointment));   
+                if (newStatus === 'Accepted') {
+                    localStorage.setItem("appointedInfo", JSON.stringify(appointment));  // Save to another key for the appointed tab
+                }
+                renderAppointment();
+                alert(`Appointment ${newStatus.toLowerCase()}!`);
             }
-</script>
-    </div>
-    </div>
+            renderAppointment();
+        </script>
+        
 </body>
 </html>
