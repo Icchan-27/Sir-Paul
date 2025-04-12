@@ -119,56 +119,104 @@
             background-color: #2c7df7;
             color: white;
         }
+        button {
+            padding: 6px 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .done-btn {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h2>SMC Clinic</h2>
-            <a href="#" class="active">Profile</a>
-            <a href="nurseClinic.html">Clinic</a>
-            <a href="#">Inventory</a>
+        <a href="#" class="active">Profile</a>
+        <a href="nurseClinic.html">Clinic</a>
+        <a href="#">Inventory</a>
     </div>
     <div class="header">
         SMC Clinic Dashboard
         <a href="Loginpage.html" class="logout-link">Log Out</a>
-        </div>
+    </div>
     <div class="main-content">
-    <div class="profile">
-        <img src="ambot.png" alt="Profile Picture" />
-        <h2>Ma. Alonah A. Chan</h2>
-    </div>
-    <div class="tabs">
-        <a href="nurseDashBoard.html" class="tab" >Pending</a>
-        <a href="#" class="tab active">Appointed</a>
-    </div>
-    <div class="content">
-        <table>
-            <tr>
-                <th>Reason</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        <tr>
-            <td id="reasonCell"></td>
-            <td id="dateCell"></td>
-            <td id="statusCell"></td>
-        </tr>
-        </table>
-    </div>
+        <div class="profile">
+            <img src="ambot.png" alt="Profile Picture" />
+            <h2>Ma. Alonah A. Chan</h2>
+        </div>
+        <div class="tabs">
+            <a href="nurseDashBoard.html" class="tab">Pending</a>
+            <a href="#" class="tab active">Appointed</a>
+        </div>
+        <div class="content">
+            <table>
+                <tr>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                <!-- Appointments will be dynamically inserted here -->
+            </table>
+        </div>
     </div>
     <script>
-        const appointment = JSON.parse(localStorage.getItem("appointedInfo"));
-    function renderAppointment() {
-        if (appointment && appointment.status === "Accepted") {
-            document.getElementById("reasonCell").textContent = appointment.reason;
-            document.getElementById("dateCell").textContent = `${appointment.date} at ${appointment.time}`;
-            document.getElementById("statusCell").textContent = appointment.status;
-            document.getElementById("remarksCell").textContent = appointment.remarks;
-        } else {
-            document.querySelector(".content").innerHTML = "<p>No accepted appointments to show.</p>";
+        const appointments = JSON.parse(localStorage.getItem("appointedList")) || [];
+
+        function renderAcceptedAppointments() {
+            const accepted = appointments
+                .filter(a => a.status === "Accepted")
+                .reverse(); // Sort to make the newest appointment on top
+    
+            if (accepted.length === 0) {
+                document.querySelector(".content").innerHTML = "<p>No accepted appointments to show.</p>";
+                return;
+            }
+    
+            const table = document.querySelector("table");
+            table.innerHTML = `
+                <tr>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            `;
+    
+            accepted.forEach(a => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${a.reason}</td>
+                    <td>${a.date} at ${a.time}</td>
+                    <td>${a.status}</td>
+                    <td>
+                        <button class="done-btn" onclick="markAsDone('${a.date}')">Done</button>
+                    </td>
+                `;
+    
+                table.appendChild(row);
+            });
         }
-    }
-renderAppointment(); 
+    
+        function markAsDone(date) {
+            const index = appointments.findIndex(a => a.date === date);
+            if (index !== -1) {
+                appointments[index].status = "Done"; // Change status to "Done"
+                localStorage.setItem("appointedList", JSON.stringify(appointments)); // Save to localStorage
+                renderAcceptedAppointments(); // Re-render the appointments list
+            }
+        }
+
+        renderAcceptedAppointments();
     </script>
 </body>
 </html>
