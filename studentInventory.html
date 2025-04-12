@@ -62,8 +62,8 @@
             transition: background 0.3s ease;
         }
         .tab {
-            margin-left: 350px;
-            margin-top: 100px;
+            margin-left: 260px;
+            margin-top: 70px;
             background-color: #2c7df7;
             color: white;
             padding: 10px 20px;
@@ -74,14 +74,17 @@
             box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
         }
         .content {
-            margin-left: 350px;
+            margin-left: 260px;
             margin-top: 0;
             background: white;
             padding: 20px;
             border-radius: 10px;
             border-top-left-radius: 0px;
-            width: 1000px;
+            width: calc(100% - 280px);
+            max-width: 1200px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box;
         }
         table {
             width: 100%;
@@ -92,9 +95,43 @@
             text-align: left;
             padding: 10px;
             border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
         }
-        thead {
+        th {
             background-color: #f2f2f2;
+        }
+        td:last-child, th:last-child {
+            border-right: none;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        @media (max-width: 1200px) {
+            .content, .tab {
+                width: calc(100% - 280px);
+            }
+        }
+        @media (max-width: 1024px) {
+            .content, .tab {
+                width: calc(100% - 240px);
+                margin-left: 240px;
+            }
+        }
+        @media (max-width: 768px) {
+            .content, .tab {
+                width: calc(100% - 200px);
+                margin-left: 200px;
+            }
+        }
+        @media (max-width: 480px) {
+            .content, .tab {
+                width: calc(100% - 160px);
+                margin-left: 160px;
+            }
+            .header {
+                font-size: 16px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -134,6 +171,18 @@
                 </tr>
                 <tr>
                     <td>Tawas</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>Panadol</td>
+                    <td>Out of Stock</td>
+                </tr>
+                <tr>
+                    <td>Alaxan</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>Biogesic</td>
                     <td>Available</td>
                 </tr>
             </tbody>
