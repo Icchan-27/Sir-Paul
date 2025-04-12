@@ -124,9 +124,9 @@
 <body>
     <div class="sidebar">
         <h2>SMC Clinic</h2>
-            <a href="nurseDashBoard.html" >Profile</a>
-            <a href="#" class="active">Clinic</a>
-            <a href="#">Medicines</a>
+            <a href="#" class="active">Profile</a>
+            <a href="nurseClinic.html">Clinic</a>
+            <a href="#">Inventory</a>
     </div>
     <div class="header">
         SMC Clinic Dashboard
@@ -147,16 +147,28 @@
                 <th>Reason</th>
                 <th>Date</th>
                 <th>Status</th>
-                <th>Remarks</th>
             </tr>
         <tr>
             <td id="reasonCell"></td>
             <td id="dateCell"></td>
             <td id="statusCell"></td>
-            <td id="remarksCell"></td>
         </tr>
         </table>
     </div>
     </div>
+    <script>
+        const appointment = JSON.parse(localStorage.getItem("appointedInfo"));
+    function renderAppointment() {
+        if (appointment && appointment.status === "Accepted") {
+            document.getElementById("reasonCell").textContent = appointment.reason;
+            document.getElementById("dateCell").textContent = `${appointment.date} at ${appointment.time}`;
+            document.getElementById("statusCell").textContent = appointment.status;
+            document.getElementById("remarksCell").textContent = appointment.remarks;
+        } else {
+            document.querySelector(".content").innerHTML = "<p>No accepted appointments to show.</p>";
+        }
+    }
+renderAppointment(); 
+    </script>
 </body>
 </html>
