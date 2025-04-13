@@ -130,7 +130,7 @@
     .edit-btn:hover {
       background-color: #1748b5;
     }
-    input[type="number"], input[type="date"], select {
+    input[type="number"], input[type="date"], input[type="text"], select {
       padding: 5px;
       border-radius: 3px;
       border: 1px solid #ccc;
@@ -157,6 +157,7 @@
       <a href="#" class="tab active">Inventory</a>
     </div>
     <div class="content">
+      <button class="edit-btn" onclick="addNewItem()" style="margin-bottom: 10px;">Add Item</button>
       <table>
         <thead>
           <tr>
@@ -242,6 +243,51 @@
       row.cells[3].textContent = newExpiry;
       row.cells[4].textContent = newStatus;
       actionCell.innerHTML = `<button class="edit-btn" onclick="editRow(this)">Edit</button>`;
+    }
+
+    function addNewItem() {
+      const tableBody = document.querySelector("tbody");
+
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td><input type="text" placeholder="Medicine name" /></td>
+        <td><input type="number" min="0" /></td>
+        <td><input type="number" min="0" /></td>
+        <td><input type="date" /></td>
+        <td>
+          <select>
+            <option value="Available">Available</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+        </td>
+        <td><button class="edit-btn" onclick="saveNewItem(this)">Save</button></td>
+      `;
+
+      tableBody.prepend(newRow);
+    }
+
+    function saveNewItem(button) {
+      const row = button.closest('tr');
+      const nameInput = row.cells[0].querySelector('input');
+      const stockInput = row.cells[1].querySelector('input');
+      const totalInput = row.cells[2].querySelector('input');
+      const expiryInput = row.cells[3].querySelector('input');
+      const statusSelect = row.cells[4].querySelector('select');
+
+      const name = nameInput.value.trim() || "Unnamed";
+      const stock = parseInt(stockInput.value.trim()) || 0;
+      const total = parseInt(totalInput.value.trim()) || 0;
+      const expiry = expiryInput.value || "N/A";
+      const status = statusSelect.value;
+
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${stock}</td>
+        <td>${total}</td>
+        <td>${expiry}</td>
+        <td>${status}</td>
+        <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+      `;
     }
   </script>
 </body>
