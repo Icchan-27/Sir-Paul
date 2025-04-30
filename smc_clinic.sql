@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2025 at 07:02 PM
+-- Generation Time: Apr 30, 2025 at 08:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,28 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`appointment_id`, `patient_id`, `Reason`, `appointmentDate`, `appointmentTime`, `remarks`, `Status`) VALUES
-(1, 1, 'DRPH ALL-STAR', '2025-05-05', '10:30:00', 'Lipsync for the Crown', 'Accepted');
+(1, 1, 'DRPH ALL-STAR', '2025-05-05', '10:30:00', 'Condragulations', 'Done'),
+(2, 5, 'Hi maam', '2025-05-05', '10:35:00', 'loren ipsum som dolor', 'Accepted'),
+(3, 1, 'shremmmmpppp', '2025-05-07', '11:56:00', 'DELEE ko kay walaii Shremmpp', 'Rejected');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clinic_status`
+--
+
+CREATE TABLE `clinic_status` (
+  `id` int(11) NOT NULL,
+  `status` enum('open','closed') NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `clinic_status`
+--
+
+INSERT INTO `clinic_status` (`id`, `status`, `updated_at`) VALUES
+(1, 'open', '2025-04-30 06:51:19');
 
 -- --------------------------------------------------------
 
@@ -108,6 +129,12 @@ ALTER TABLE `appointments`
   ADD KEY `fk_patient_id` (`patient_id`);
 
 --
+-- Indexes for table `clinic_status`
+--
+ALTER TABLE `clinic_status`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `nurse`
 --
 ALTER TABLE `nurse`
@@ -127,7 +154,13 @@ ALTER TABLE `patient`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `clinic_status`
+--
+ALTER TABLE `clinic_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `nurse`
